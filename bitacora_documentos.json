@@ -214,5 +214,29 @@
       "meta",
       "cumbre"
     ]
+  },
+  {
+    "expedicionId": "EXP-IZTA-01",
+    "timestamp": {
+      "$date": "2026-08-22T08:00:00Z"
+    },
+    "ubicacion": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [-98.64500, 19.12800],
+          [-98.64300, 19.12800],
+          [-98.64300, 19.13000],
+          [-98.64500, 19.13000],
+          [-98.64500, 19.12800]
+        ]
+      ]
+    },
+    "texto_nota": "Área completa de riesgo por caída de rocas",
+    "etiquetas": [
+      "riesgo",
+      "rocas",
+      "area"
+    ]
   }
 ]
