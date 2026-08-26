@@ -2,6 +2,14 @@
 
 Este documento y su respectivo script de comandos (`scripts_proyecto.js`) detallan el orden exacto de ejecución para desplegar y verificar la solución integral de monitoreo en alta montaña sobre el Iztaccíhuatl y Popocatépetl. La arquitectura implementa bases de datos documentales desacopladas en MongoDB, optimización mediante índices geoespaciales y temporales, validación estricta de esquemas, consultas analíticas avanzadas y un esquema de seguridad basado en roles (RBAC).
 
+---
+
+### 📝 Nota Metodológica sobre la Fuente y Procesamiento de Datos GPX
+* **Ruta planeada (`la-joya-refugio-de-los-100-ex-refugio-luis-mendez.gpx`):** Archivo público descargado de la plataforma Wikiloc (https://loc.wiki/t/276231431?wa=sc), correspondiente a la trayectoria de referencia de la ruta hacia el Iztaccíhuatl. El archivo fue procesado mediante Python y transformado a formato GeoJSON (LineString) para conformar el documento base de la colección expediciones.
+* **Telemetría de ejecución (`Primera_rodilla_de_Iztaccíhuatl.gpx`):** Registros propios obtenidos mediante un dispositivo GPS durante una expedición en terreno. Debido a un fallo técnico en el registro original, el archivo exportado presentaba marcas de tiempo estáticas que no permitían representar correctamente la secuencia temporal. Por este motivo, se realizó mediante Python una normalización cronológica de los timestamps, distribuyendo los registros de forma continua entre las 00:30 y las 14:30 horas. La transformación se calibró utilizando hitos conocidos de la expedición, de manera que la llegada a la cumbre quedara representada aproximadamente entre las 08:30 y las 09:00 horas. El procedimiento modifica únicamente la referencia temporal de los registros y conserva las coordenadas y demás atributos obtenidos originalmente del dispositivo.
+
+---
+
 ## 🛠️ Requisitos Previos
 
 - **MongoDB Community** (Academy Learner Lab) con herramientas de línea de comandos `mongosh` y `mongoimport` disponibles.
