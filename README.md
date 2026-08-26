@@ -18,7 +18,7 @@ cd archivos-mongo-izta-2
 
 ### Paso 1: Carga de Datos Base (Ingesta)
 
-Antes de ejecutar los comandos analíticos dentro de la shell de MongoDB, es necesario importar los documentos semilla (expediciones, telemetría, bitácora de condiciones y contactos de emergencia) desde la terminal del sistema:
+Antes de ejecutar los comandos analíticos dentro de la shell de MongoDB, es necesario importar los documentos (expediciones, telemetría, bitácora de condiciones y contactos de emergencia) desde la terminal del sistema:
 
 ```bash
 mongoimport --db proyecto_montana --collection expediciones --file Documento_expedicion.json
@@ -29,7 +29,7 @@ mongoimport --db proyecto_montana --collection contactos_emergencia --file conta
 ---
 
 ### Paso 2: Selección de Base de Datos y Diagnóstico Inicial (Sin Índices)
-Una vez dentro de `mongosh`, seleccionamos el contexto de trabajo y ejecutamos consultas base evaluando su rendimiento mediante `.explain("executionStats")` para medir el comportamiento inicial y los cuellos de botella (`COLLSCAN`, ordenamientos en memoria)[cite: 7, 10]:
+Una vez dentro de `mongosh`, seleccionamos el contexto de trabajo y ejecutamos consultas base evaluando su rendimiento mediante `.explain("executionStats")` para medir el comportamiento inicial (`COLLSCAN`, ordenamientos en memoria):
 
 ```javascript
 // Seleccionar la base de datos oficial del proyecto
@@ -63,7 +63,7 @@ db.bitacora_condiciones.find({
 ---
 
 ### Paso 3: Creación y Reestructuración de Índices
-Implementamos la estrategia de indexación definitiva para acelerar las búsquedas geográficas, temporales y de texto, eliminando los escaneos de colección completos[cite: 6, 7]:
+Implementamos la estrategia de indexación para acelerar las búsquedas geográficas, temporales y de texto:
 
 ```javascript
 // 1. Índice geoespacial para la bitácora de condiciones
@@ -75,12 +75,12 @@ db.telemetria.createIndex({ "ubicacion": "2dsphere", "meta.expedicionId": 1, "ti
 
 // 3. Índice para búsqueda textual en la bitácora
 db.bitacora_condiciones.createIndex({ "expedicionId": 1, "texto_nota": "text" }, { name: "idx_bitacora_texto" })
-```[cite: 6, 7, 10]
+```
 
 ---
 
 ### Paso 4: Configuración de Reglas de Calidad (`$jsonSchema`)
-Aplicamos validadores estrictos mediante `collMod` para controlar tipos BSON, campos obligatorios, rangos físicos terrestres y estructuras GeoJSON válidas[cite: 6, 7]:
+Aplicamos validadores estrictos mediante `collMod` para controlar tipos BSON, campos obligatorios, rangos físicos terrestres y estructuras GeoJSON válidas:
 
 ```javascript
 // Validador estricto para la colección de telemetria
@@ -178,12 +178,12 @@ db.runCommand({
   },
   validationAction: "error"
 })
-```[cite: 6, 7, 10]
+```
 
 ---
 
 ### Paso 5: Consultas Especializadas y Análisis Espacial / Temporal
-Ejecutamos las operaciones operativas clave para la toma de decisiones, evaluación de rutas, geofencing y monitoreo[cite: 6, 7]:
+Ejecutamos las consutlas clave para la toma de decisiones, evaluación de rutas, geofencing y monitoreo:
 
 ```javascript
 // A. Proximidad a refugios con filtros temáticos
@@ -305,15 +305,15 @@ db.bitacora_condiciones.find({
   "expedicionId": "EXP-IZTA-01",
   $text: { $search: "rocas hielo -despejado" }
 })
-```[cite: 6, 7, 9, 10]
+```
 
 ---
 
 ### Paso 6: Seguridad y Control de Acceso (RBAC)
-Configuramos los roles institucionales y verificamos los permisos mínimos requeridos[cite: 9, 10]:
+Configuramos los roles institucionales y verificamos los permisos mínimos requeridos:
 
 ```javascript
-// 1. Rol para ingesta de dispositivos IoT / GPS (Solo Inserción de Telemetría)
+// 1. Rol para ingesta de dispositivos GPS (Solo Inserción de Telemetría)
 db.createRole({
    role: "ingresoTelemetriaRole",
    privileges: [
@@ -344,17 +344,16 @@ db.createRole({
    roles: []
 })
 
-// Verificación teórica de privilegios asignados
+// Verificación de privilegios asignados
 db.getRoles({ showPrivileges: true })
-```[cite: 9, 10]
+```
 
 ---
 
-## 📌 Notas Técnicas Finales[cite: 8, 9]
+## 📌 Notas Técnicas Finales
 
-* **Privacidad de Datos:** Ningún script ni dato del repositorio contiene información personal real, contraseñas en texto plano o cadenas de conexión con credenciales reales[cite: 8, 9].
-* **Entorno de Pruebas:** El entorno Academy Learner Lab no tiene autenticación de usuarios activada por defecto; los roles de seguridad se encuentran diseñados, implementados y verificados teóricamente mediante `getRoles()`[cite: 8, 9].
-* **Reinicio del Entorno:** Para limpiar la base de datos desde un estado conocido y repetir la ingesta, ejecute `db.dropDatabase()` previo al paso 1.
+* **Privacidad de Datos:** Ningún script ni dato del repositorio contiene información personal real, contraseñas en texto plano o cadenas de conexión con credenciales reales.
+* **Entorno de Pruebas:** El entorno Academy Learner Lab no tiene autenticación de usuarios activada por defecto; los roles de seguridad se encuentran diseñados, implementados y verificados teóricamente mediante `getRoles()`.
   
 
 
