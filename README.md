@@ -12,6 +12,7 @@ Ejecutar los siguientes comandos:
 ```bash
 git clone https://github.com/Jorge314/archivos-mongo-izta-2.git
 cd archivos-mongo-izta-2
+```
 
 ## 🚀 Orden de Ejecución y Explicación de Comandos
 
@@ -24,10 +25,7 @@ mongoimport --db proyecto_montana --collection expediciones --file Documento_exp
 mongoimport --db proyecto_montana --collection telemetria --file telemetria_8mil_puntos.json --jsonArray
 mongoimport --db proyecto_montana --collection bitacora_condiciones --file bitacora_documentos.json --jsonArray
 mongoimport --db proyecto_montana --collection contactos_emergencia --file contactos_emergencias_documentos.json --jsonArray
-```[cite: 8, 13]
-
-*(Nota: Si te encuentras en un entorno con puerto personalizado o réplica específica, asegúrate de ajustar los parámetros de conexión, por ejemplo `--port 27118`[cite: 13]).*
-
+```
 ---
 
 ### Paso 2: Selección de Base de Datos y Diagnóstico Inicial (Sin Índices)
