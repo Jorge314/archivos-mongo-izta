@@ -11,7 +11,7 @@ Ejecutar los siguientes comandos:
 
 ```bash
 git clone https://github.com/Jorge314/archivos-mongo-izta-2.git
-cd archivos-mongo-izta-2
+cd archivos-mongo-izta-2/Colecciones
 ```
 
 ## 🚀 Orden de Ejecución y Explicación de Comandos
